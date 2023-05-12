@@ -6,4 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".SignInPage">
 
+    <TextView
+        android:id="@+id/infoPageSignIn"
+        android:layout_width="315dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="47dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginBottom="644dp"
+        android:text="Let us help you plan new trips, make new friends and join them in new adventures."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
