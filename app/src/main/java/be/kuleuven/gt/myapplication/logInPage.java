@@ -33,14 +33,13 @@ import be.kuleuven.gt.model.User;
 public class logInPage extends AppCompatActivity {
 
     private ArrayList<String> userList = new ArrayList<>();
-    private ArrayList<String> passwordList = new ArrayList<>();
     private String userInput;
     private String passwordInput;
     HashMap<String, String> infoUser = new HashMap<String, String>();
     private Button submitLogIn;
     private TextInputEditText username;
     private EditText password;
-    private static final String USERNAME_URL = "https://studev.groept.be/api/a22pt303/allUsernames";
+    private static final String USERNAME_URL = "https://studev.groept.be/api/a22pt303/allPasswordsandUsers";
 
 
     @Override
@@ -108,9 +107,9 @@ public class logInPage extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String user= jsonObject.getString("nameUser");
-                String password=jsonObject.getString("nameUser");
+                String password=jsonObject.getString("password");
                 userList.add(user);
-               infoUser.put(user,password);
+                infoUser.put(user,password);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -119,10 +118,14 @@ public class logInPage extends AppCompatActivity {
 
 
     public void onBtnNext_Clicked(View Caller) {
+
         for (int i=0;i<userList.size();i++){
         if (userInput.equals(userList.get(i))){
-            Intent intent = new Intent(this, HomePageActivity.class);
-            startActivity(intent);}
-    }
+            if (passwordInput.equals(infoUser.get(userInput))){
+                Intent intent = new Intent(this, HomePageActivity.class);
+                startActivity(intent);
+            }
+        }
+         }
 
 }}
