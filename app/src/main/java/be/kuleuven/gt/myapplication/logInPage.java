@@ -25,11 +25,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import be.kuleuven.gt.model.User;
 
 public class logInPage extends AppCompatActivity {
 
-    private ArrayList userList;
+    private ArrayList<String> userList = new ArrayList<>();
+    private ArrayList<String> passwordList = new ArrayList<>();
     private String userInput;
+    private String passwordInput;
+    HashMap<String, String> infoUser = new HashMap<String, String>();
     private Button submitLogIn;
     private TextInputEditText username;
     private EditText password;
@@ -66,6 +73,7 @@ public class logInPage extends AppCompatActivity {
             // enable/disable the button based on the text fields' content
             submitLogIn.setEnabled(true);
             userInput = username.getText().toString();
+            passwordInput=password.getText().toString();
         }
     };
 
@@ -100,7 +108,9 @@ public class logInPage extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String user= jsonObject.getString("nameUser");
+                String password=jsonObject.getString("nameUser");
                 userList.add(user);
+               infoUser.put(user,password);
             }
         } catch (JSONException e) {
             e.printStackTrace();
