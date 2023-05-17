@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    app:cardMaxElevation="10dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- ImageVIew to display Trip Image -->
+
+        <ImageView
+            android:id="@+id/tripImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/app_name"
+            android:padding="5dp"
+             />
+
+        <!-- Text View to display Trip Name -->
+        <TextView
+            android:id="@+id/tripName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/tripImage"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Text VIew to display Trip Start Date -->
+
+        <!-- Text VIew to display Trip End Date -->
+        <TextView
+            android:id="@+id/tripStartDate"
+            android:layout_width="149dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tripName"
+            android:layout_marginStart="109dp"
+            android:layout_marginTop="14dp"
+            android:layout_toEndOf="@id/tripImage"
+            android:drawablePadding="2dp" />
+
+        <TextView
+            android:id="@+id/tripEndDate"
+            android:layout_width="149dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tripStartDate"
+            android:layout_marginStart="117dp"
+            android:layout_marginTop="17dp"
+            android:layout_toEndOf="@id/tripImage"
+            android:drawablePadding="2dp" />
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
