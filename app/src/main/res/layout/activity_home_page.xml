@@ -8,8 +8,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tripView"
-        android:layout_width="412dp"
-        android:layout_height="620dp"
+        android:layout_width="409dp"
+        android:layout_height="613dp"
         android:background="#FAF9F8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +19,7 @@
         android:layout_width="150dp"
         android:layout_height="66dp"
         android:layout_marginStart="128dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="28dp"
         android:onClick="onBtnAddTrip_Clicked"
         android:text="Add Trip"
         app:layout_constraintStart_toStartOf="parent"

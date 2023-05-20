@@ -51,11 +51,13 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         public ViewHolder(View tripView) {
             super(tripView);
             trip = (View) tripView;
+            trip.setOnClickListener(this);
         }
 
         public void onClick(View tripView) {
             Intent intent = new Intent(tripView.getContext(), TripLogActivity.class);
             tripView.getContext().startActivity(intent);
+
         }
     }
 }
