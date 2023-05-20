@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.kuleuven.gt.model.Trip;
+import be.kuleuven.gt.model.User;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,14 +28,19 @@ import com.android.volley.toolbox.Volley;
 public class HomePageActivity extends AppCompatActivity {
 
     private RecyclerView tripView;
-    private static final String TRIP_URL = "https://studev.groept.be/api/a22pt303/trip";
+    private static final String TRIP_URL = "https://studev.groept.be/api/a22pt303/selectAllTripsOfAUser/";
     private List<Trip> trips = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
         tripView = findViewById( R.id.tripView );
+        // use this use to display only this user's trips
+
+
+
         TripAdapter adapter = new TripAdapter( trips );
         tripView.setAdapter( adapter );
         tripView.setLayoutManager( new LinearLayoutManager( this ));
@@ -42,11 +49,12 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     private void requestTrips() {
+        User user = (User) getIntent().getParcelableExtra("User");
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         JsonArrayRequest tripRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                TRIP_URL,
+                TRIP_URL + user.getUsername(),
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override

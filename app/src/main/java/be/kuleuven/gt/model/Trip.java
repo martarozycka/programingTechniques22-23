@@ -74,5 +74,9 @@ public class Trip implements Parcelable {
     }
 
 
+    public String removeSpacesInName() {
+        return name.replaceAll("\\s", "");
+    }
+
 
 }

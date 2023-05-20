@@ -54,4 +54,8 @@ public class User implements Parcelable {
             e.printStackTrace();
         }
     }
+
+    public String getUsername() {
+        return username;
+    }
 }

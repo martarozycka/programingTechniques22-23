@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import be.kuleuven.gt.model.Trip;
 import be.kuleuven.gt.model.User;
 
 public class logInPage extends AppCompatActivity {
@@ -122,7 +124,14 @@ public class logInPage extends AppCompatActivity {
         for (int i=0;i<userList.size();i++){
         if (userInput.equals(userList.get(i))){
             if (passwordInput.equals(infoUser.get(userInput))){
+                TextInputEditText userLogIn = (TextInputEditText) findViewById(R.id.userLogIn);
+                EditText passLogIn = (EditText) findViewById(R.id.passLogIn);
+                User user = new User(
+                        userLogIn.getText().toString(),
+                        passLogIn.getText().toString()
+                );
                 Intent intent = new Intent(this, HomePageActivity.class);
+                intent.putExtra("User", user);
                 startActivity(intent);
             }
         }
