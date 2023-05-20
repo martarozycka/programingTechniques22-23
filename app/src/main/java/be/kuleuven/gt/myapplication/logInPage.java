@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,8 +27,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
-import be.kuleuven.gt.model.Trip;
 import be.kuleuven.gt.model.User;
 
 public class logInPage extends AppCompatActivity {
@@ -120,21 +119,27 @@ public class logInPage extends AppCompatActivity {
 
 
     public void onBtnNext_Clicked(View Caller) {
-
-        for (int i=0;i<userList.size();i++){
-        if (userInput.equals(userList.get(i))){
-            if (passwordInput.equals(infoUser.get(userInput))){
-                TextInputEditText userLogIn = (TextInputEditText) findViewById(R.id.userLogIn);
-                EditText passLogIn = (EditText) findViewById(R.id.passLogIn);
-                User user = new User(
-                        userLogIn.getText().toString(),
-                        passLogIn.getText().toString()
-                );
-                Intent intent = new Intent(this, HomePageActivity.class);
-                intent.putExtra("User", user);
-                startActivity(intent);
+        int i=0;
+        for (i=0;i<userList.size();i++){
+            if (userInput. equals(userList.get(i))){
+                 if (passwordInput.equals(infoUser.get(userInput))){
+                     Intent intent = new Intent(this, HomePageActivity.class);
+                     startActivity(intent);
+                 }
+                 else {
+                         Toast.makeText(
+                                 logInPage.this,
+                                 "Incorrect password",
+                                 Toast.LENGTH_LONG).show();
+                 }
+                 break;
+            }
+            if (i==userList.size()-1){
+                Toast.makeText(
+                        logInPage.this,
+                        "Incorrect username",
+                        Toast.LENGTH_LONG).show();
             }
         }
-         }
-
-}}
+    }
+}
