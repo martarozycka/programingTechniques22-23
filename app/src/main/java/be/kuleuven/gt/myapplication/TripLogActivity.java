@@ -17,8 +17,9 @@ public class TripLogActivity extends AppCompatActivity {
     private TextView txtEndDate;
     private TextView txtLocationName;
 
+    private static final String LOCATION_URL = "https://studev.groept.be/api/a22pt303/selectLocationsPerTrip/";
+
     //private RecyclerView commentView;
-    //private static final String COMMENT_URL = "https://studev.groept.be/api/a22pt303/selectAllTripsOfAUser/";
     //private List<Comment> comments = new ArrayList<>();
 
     @Override
