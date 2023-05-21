@@ -58,7 +58,6 @@ public class Trip implements Parcelable {
         dest.writeString(startDate);
         dest.writeString(endDate);
     }
-//    JSON object??
 
 
     public String getName() {
