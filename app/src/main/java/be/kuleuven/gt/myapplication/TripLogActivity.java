@@ -1,8 +1,10 @@
 package be.kuleuven.gt.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import be.kuleuven.gt.model.Comment;
 import be.kuleuven.gt.model.Location;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -34,13 +36,15 @@ public class TripLogActivity extends AppCompatActivity {
 
     private static final String LOCATION_URL = "https://studev.groept.be/api/a22pt303/selectLocationsPerTrip/";
 
-    //private RecyclerView commentView;
-    //private List<Comment> comments = new ArrayList<>();
+    private RecyclerView commentView;
+    private List<Comment> comments = new ArrayList<>();
+    private static final String COMMENT_URL = "https://studev.groept.be/api/a22pt303/selectCommentsPerLocation/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_log);
+        commentView = findViewById( R.id.commentView );
 
         // Initialize TextViews
         txtTripName = findViewById(R.id.txtTripName);
@@ -53,8 +57,12 @@ public class TripLogActivity extends AppCompatActivity {
         txtStartDate.setText(trip.getStartDate());
         txtEndDate.setText(trip.getEndDate());
 
-
         requestLocations();
+
+//        CommentAdapter adapter = new CommentAdapter(comments);
+//        commentView.setAdapter( adapter );
+//        commentView.setLayoutManager( new LinearLayoutManager( this ));
+
 
     }
 
@@ -74,6 +82,8 @@ public class TripLogActivity extends AppCompatActivity {
                         if (!locationList.isEmpty()) {
                             txtLocationName.setText(locationList.get(0).getLocationName());
                         }
+
+                        requestComments();
                     }
 
                 },
@@ -101,6 +111,58 @@ public class TripLogActivity extends AppCompatActivity {
                 Location location = new Location(locationName, longitude, latitude);
                 locationList.add(location);
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //for the comments!
+    private void requestComments() {
+        String locationName = null;
+        if (!locationList.isEmpty()) {
+            locationName = locationList.get(0).getLocationName();
+        }
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, COMMENT_URL + locationName, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // JSON array is obtained successfully
+                        // Proceed with parsing and using the data
+                        processJSONArray2(response);
+
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(
+                                TripLogActivity.this,
+                                "Unable to communicate with the server",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    private void processJSONArray2(JSONArray jsonArray) {
+
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String comment = jsonObject.getString("comment");
+                String username =jsonObject.getString("nameUser");
+                Comment newComment = new Comment(username, comment);
+                comments.add(newComment);
+            }
+            // Notify the adapter that the data set has changed
+            CommentAdapter adapter = new CommentAdapter(comments);
+            commentView.setAdapter( adapter );
+            commentView.setLayoutManager( new LinearLayoutManager( this ));
+            adapter.notifyDataSetChanged();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
