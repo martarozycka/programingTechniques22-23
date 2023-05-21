@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Trip implements Parcelable {
     private String name;
     private String startDate;
@@ -72,6 +75,15 @@ public class Trip implements Parcelable {
     public String getEndDate() {
         return endDate;
     }
+
+    public Map<String, String> getPostParameters() {
+        Map<String, String> params = new HashMap<>();
+        params.put("titleTrip", name);
+        params.put("startDate", startDate);
+        params.put("endDate", endDate);
+        return params;
+    }
+
 
 
     public String removeSpacesInName() {

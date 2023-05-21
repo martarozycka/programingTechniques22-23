@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import be.kuleuven.gt.model.Trip;
 import be.kuleuven.gt.model.User;
@@ -23,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 public class HomePageActivity extends AppCompatActivity {
@@ -89,8 +92,9 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void onBtnAddTrip_Clicked(View Caller) {
-        Intent intent = new Intent(this, TripLogActivity.class);
+        Intent intent = new Intent(this, TripAddActivity.class);
         startActivity(intent);}
+
 
 
 }
