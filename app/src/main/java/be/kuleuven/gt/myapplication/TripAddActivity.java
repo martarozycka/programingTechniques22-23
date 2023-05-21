@@ -42,9 +42,10 @@ public class TripAddActivity extends AppCompatActivity {
     private EditText enddate;
     private EditText comments;
     private Button submitTrip;
-    private static final String url = "https://studev.groept.be/api/a22pt303/insertTrip/";
+    private static final String trip = "https://studev.groept.be/api/a22pt303/insertTrip/name/startdate/enddate";
 
-
+    private static final String location = "https://studev.groept.be/api/a22pt303/insertLocation/location/titletrip";
+    private static final String comment = "https://studev.groept.be/api/a22pt303/insertLocation/location/titletrip";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +84,7 @@ public class TripAddActivity extends AppCompatActivity {
         }
     };
 
-    private void updateDatabase() {
+    private void updateTrip() {
 
             // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -93,7 +94,7 @@ public class TripAddActivity extends AppCompatActivity {
 
 
         // Create the POST request with the data to be sent.
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, trip,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -120,11 +121,11 @@ public class TripAddActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() {
                     // Add the data to the request as parameters.
                     Map<String, String> params = new HashMap<>();
-                    params.put("titleTrip", name.getText().toString());
-                    // params.put("titleTrip", "fun");
-                    params.put("startDate", startdate.getText().toString());
+                    params.put("name", name.getText().toString());
+                // params.put("titleTrip", "fun");
+                    params.put("startdate", startdate.getText().toString());
                     //params.put("startDate", "2023-02-05");
-                    params.put("endDate", enddate.getText().toString());
+                    params.put("enddate", enddate.getText().toString());
                    // params.put("endDate", "2023-04-07");
                     return params;
                 }
@@ -135,10 +136,109 @@ public class TripAddActivity extends AppCompatActivity {
             queue.add(stringRequest);
         }
 
+    private void updateLocation() {
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        ProgressDialog progressDialog = new ProgressDialog(TripAddActivity.this);
+        progressDialog.setMessage("Uploading, please wait...");
+
+
+        // Create the POST request with the data to be sent.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, location,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Handle the response from the server, if needed.
+                        progressDialog.dismiss();
+                        Toast.makeText(
+                                TripAddActivity.this,
+                                "Post request executed",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle the error response, if needed.
+                        progressDialog.dismiss();
+                        Toast.makeText(
+                                TripAddActivity.this,
+                                "Unable to communicate with the server",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Add the data to the request as parameters.
+                Map<String, String> params = new HashMap<>();
+                params.put("location", tripLocation.getText().toString());
+                params.put("titletrip", name.getText().toString());
+
+                return params;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        progressDialog.show();
+        queue.add(stringRequest);
+    }
+    private void updateComments() {
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        ProgressDialog progressDialog = new ProgressDialog(TripAddActivity.this);
+        progressDialog.setMessage("Uploading, please wait...");
+
+
+        // Create the POST request with the data to be sent.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, comment,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Handle the response from the server, if needed.
+                        progressDialog.dismiss();
+                        Toast.makeText(
+                                TripAddActivity.this,
+                                "Post request executed",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle the error response, if needed.
+                        progressDialog.dismiss();
+                        Toast.makeText(
+                                TripAddActivity.this,
+                                "Unable to communicate with the server",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Add the data to the request as parameters.
+                Map<String, String> params = new HashMap<>();
+                //params.put("location", tripLocation.getText().toString());
+                //params.put("titletrip", name.getText().toString());
+
+                return params;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        progressDialog.show();
+        queue.add(stringRequest);
+    }
+
 
     public void onBtnSubmitTrip_Clicked(View Caller) {
         if (submitTrip.isEnabled()){
-                    updateDatabase();
+                    updateTrip();
+                    updateLocation();
+                    updateComments();
                     Intent intent = new Intent(this, TripConfirmationActivity.class);
                     startActivity(intent);
 
