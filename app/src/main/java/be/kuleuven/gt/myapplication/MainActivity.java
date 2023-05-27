@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import be.kuleuven.gt.model.User;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button btnLogIn;

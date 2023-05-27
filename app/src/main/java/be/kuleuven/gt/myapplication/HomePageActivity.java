@@ -92,9 +92,10 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void onBtnAddTrip_Clicked(View Caller) {
-        Intent intent = new Intent(this, TripAddActivity.class);
-        startActivity(intent);}
+// Set user details
+        User user = getIntent().getParcelableExtra("User");
+        Intent intent = new Intent(HomePageActivity.this, TripAddActivity.class);
+        intent.putExtra("User", user);
+        startActivity(intent);
 
-
-
-}
+}}

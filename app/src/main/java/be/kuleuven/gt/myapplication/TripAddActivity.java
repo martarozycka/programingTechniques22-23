@@ -6,47 +6,50 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-import be.kuleuven.gt.model.Trip;
+import be.kuleuven.gt.model.User;
 
 public class TripAddActivity extends AppCompatActivity {
 
+    private ArrayList<String> userIdList = new ArrayList<>();
+    private static final String USERID_URL = "https://studev.groept.be/api/a22pt303/checkUserFromId/";
     private TextInputEditText name;
     private TextInputEditText tripLocation;
     private EditText startdate;
     private EditText enddate;
     private EditText comments;
     private Button submitTrip;
+    private EditText friendName;
+    private Button addFriendButton;
     private static final String trip = "https://studev.groept.be/api/a22pt303/insertTrip/name/startdate/enddate";
 
     private static final String location = "https://studev.groept.be/api/a22pt303/insertLocation/location/titletrip";
-    private static final String comment = "https://studev.groept.be/api/a22pt303/insertLocation/location/titletrip";
+    private static final String comment = "https://studev.groept.be/api/a22pt303/insertComment/comment/titletrip/username";
 
+    private static final String tripUser="https://studev.groept.be/api/a22pt303/insertTripUser/titletrip/username";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,19 +60,22 @@ public class TripAddActivity extends AppCompatActivity {
         startdate= findViewById(R.id.startDate);
         enddate= findViewById(R.id.endDate);
         comments= findViewById(R.id.putComment);
+        friendName=findViewById(R.id.friendName);
+        addFriendButton=findViewById(R.id.addFriendButton);
 
         //checking that user has finished putting data
 
-        name.addTextChangedListener(textWatcher);
-        tripLocation.addTextChangedListener(textWatcher);
-        startdate.addTextChangedListener(textWatcher);
-        enddate.addTextChangedListener(textWatcher);
-
+        name.addTextChangedListener(textWatcher1);
+        tripLocation.addTextChangedListener(textWatcher1);
+        startdate.addTextChangedListener(textWatcher1);
+        enddate.addTextChangedListener(textWatcher1);
+        friendName.addTextChangedListener(textWatcher2);
         //disable button by default
         submitTrip.setEnabled(false);
+        addFriendButton.setEnabled(false);
 
     }
-    private TextWatcher textWatcher = new TextWatcher() {
+    private TextWatcher textWatcher1 = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -78,14 +84,29 @@ public class TripAddActivity extends AppCompatActivity {
 
         public void afterTextChanged(Editable s) {
             // Check if all text fields have data
-            boolean enableButton = name.getText().length() > 0 && tripLocation.getText().length() > 0 && startdate.getText().length() > 0 && enddate.getText().length() > 0;
+            boolean enableButton1 = name.getText().length() > 0 && tripLocation.getText().length() > 0 && startdate.getText().length() > 0 && enddate.getText().length() > 0;
             // Enable/disable the button based on the text fields' content
-            submitTrip.setEnabled(enableButton);
+            submitTrip.setEnabled(enableButton1);
         }
     };
 
-    private void updateTrip() {
+    private TextWatcher textWatcher2 = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        public void afterTextChanged(Editable s) {
+            // Check if all text fields have data
+            boolean enableButton2 = friendName.getText().length() > 0 ;
+            // Enable/disable the button based on the text fields' content
+            addFriendButton.setEnabled(enableButton2);
+        }
+    };
+
+    private void insertTrip() {
+        User user = (User) getIntent().getParcelableExtra("User");
             // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -136,7 +157,7 @@ public class TripAddActivity extends AppCompatActivity {
             queue.add(stringRequest);
         }
 
-    private void updateLocation() {
+    private void insertLocation() {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -184,9 +205,10 @@ public class TripAddActivity extends AppCompatActivity {
         progressDialog.show();
         queue.add(stringRequest);
     }
-    private void updateComments() {
+    private void insertComments() {
 
         // Instantiate the RequestQueue.
+        User user = getIntent().getParcelableExtra("User");
         RequestQueue queue = Volley.newRequestQueue(this);
 
         ProgressDialog progressDialog = new ProgressDialog(TripAddActivity.this);
@@ -221,8 +243,9 @@ public class TripAddActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 // Add the data to the request as parameters.
                 Map<String, String> params = new HashMap<>();
-                //params.put("location", tripLocation.getText().toString());
-                //params.put("titletrip", name.getText().toString());
+                params.put("comment", comments.getText().toString());
+                params.put("location", tripLocation.getText().toString());
+                params.put("username", user.getUsername());
 
                 return params;
             }
@@ -233,13 +256,168 @@ public class TripAddActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    private void insertTripUser(){
+
+        User user = getIntent().getParcelableExtra("User");
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        ProgressDialog progressDialog = new ProgressDialog(TripAddActivity.this);
+        progressDialog.setMessage("Uploading, please wait...");
+
+
+        // Create the POST request with the data to be sent.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, tripUser,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Handle the response from the server, if needed.
+                        progressDialog.dismiss();
+                        Toast.makeText(
+                                TripAddActivity.this,
+                                "Post request executed",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle the error response, if needed.
+                        progressDialog.dismiss();
+                        Toast.makeText(
+                                TripAddActivity.this,
+                                "Unable to communicate with the server",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Add the data to the request as parameters.
+                Map<String, String> params = new HashMap<>();
+                params.put("titletrip", name.getText().toString());
+                params.put("username", user.getUsername());
+
+                return params;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        progressDialog.show();
+        queue.add(stringRequest);
+    }
+
+    private void requestUserIds() {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, USERID_URL + friendName.getText().toString(), null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // JSON array is obtained successfully
+                        // Proceed with parsing and using the data
+                        processJSONArray(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(
+                                TripAddActivity.this,
+                                "Unable to communicate with the server",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    private void processJSONArray(JSONArray jsonArray) {
+
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String userId = jsonObject.getString("idUser");
+                userIdList.add(userId);
+            }
+
+            // Check the size of userIdList here
+            if (userIdList.size() == 0) {
+                Toast.makeText(
+                        TripAddActivity.this,
+                        "Tell your friend to download the app",
+                        Toast.LENGTH_LONG).show();
+                submitTrip.setEnabled(false);
+            } else {
+                submitTrip.setEnabled(true);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addFriend(){
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        ProgressDialog progressDialog = new ProgressDialog(TripAddActivity.this);
+        progressDialog.setMessage("Uploading, please wait...");
+
+
+        // Create the POST request with the data to be sent.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, tripUser,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Handle the response from the server, if needed.
+                        progressDialog.dismiss();
+                        Toast.makeText(
+                                TripAddActivity.this,
+                                "Post request executed",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle the error response, if needed.
+                        progressDialog.dismiss();
+                        Toast.makeText(
+                                TripAddActivity.this,
+                                "Unable to communicate with the server",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Add the data to the request as parameters.
+                Map<String, String> params = new HashMap<>();
+                params.put("titletrip", name.getText().toString());
+                params.put("username", friendName.getText().toString());
+
+                return params;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        progressDialog.show();
+        queue.add(stringRequest);
+    }
+    public void onBtnAddFriend_Clicked(View Caller) {
+        if (addFriendButton.isEnabled()){
+            requestUserIds();
+        }}
+
+
+
+
 
     public void onBtnSubmitTrip_Clicked(View Caller) {
         if (submitTrip.isEnabled()){
-                    updateTrip();
-                    updateLocation();
-                    updateComments();
-                    Intent intent = new Intent(this, TripConfirmationActivity.class);
+            //if(startdate.equals() && enddate.equals())
+                    insertTrip();
+                    insertLocation();
+                    insertComments();
+                    insertTripUser();
+                    addFriend();
+                    Intent intent = new Intent(this, HomePageActivity.class);
                     startActivity(intent);
 
         }}}

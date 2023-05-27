@@ -131,7 +131,6 @@ public class logInPage extends AppCompatActivity {
                              username.getText().toString(),
                              password.getText().toString()
                      );
-
                      Intent intent = new Intent(this, HomePageActivity.class);
                      intent.putExtra("User", user);
                      startActivity(intent);
