@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Travel Log</string>
+
+    <string name="my_map_api_key">AIzaSyC6oIsCM_mrMbvS1xpRzG3MW8zPYAvri6s</string>
 </resources>

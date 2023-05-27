@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignInPage">
+    tools:context=".SignInPage"
+    android:background="@drawable/oxana_v_qoailamljbu_unsplash__7_">
 
     <TextView
         android:id="@+id/infoPageSignIn"

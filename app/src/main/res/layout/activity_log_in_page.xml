@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/oxana_v_qoailamljbu_unsplash__7_"
     tools:context=".logInPage">
 
     <TextView
@@ -11,24 +12,28 @@
         android:layout_width="330dp"
         android:layout_height="57dp"
         android:layout_marginStart="40dp"
-        android:layout_marginEnd="41dp"
-        android:layout_marginBottom="603dp"
+        android:layout_marginTop="250dp"
+        android:shadowColor="#ffffff"
+        android:shadowDx="-1"
+        android:shadowDy="-1"
+        android:shadowRadius="1"
         android:text="Enter your details to continue planning trips and joing your friends in new adventures."
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textColor="#292525"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/userLogIn"
         android:layout_width="208dp"
         android:layout_height="68dp"
-        android:layout_marginStart="98dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginEnd="105dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#000000"
         android:hint="username"
-        app:layout_constraintBottom_toTopOf="@+id/passLogIn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:textColor="@color/black"
+        android:shadowColor="#ffffff"
+        android:textColorHint="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoTextLogInPage" />
 
@@ -36,29 +41,27 @@
         android:id="@+id/passLogIn"
         android:layout_width="208dp"
         android:layout_height="66dp"
-        android:layout_marginStart="98dp"
-        android:layout_marginEnd="105dp"
-        android:layout_marginBottom="390dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#000000"
         android:ems="10"
         android:hint="password"
+        android:textColor="@color/black"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColorHint="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userLogIn" />
 
     <Button
         android:id="@+id/submitLogIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="158dp"
-        android:layout_marginBottom="317dp"
+        android:layout_width="154dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#8BC34A"
         android:onClick="onBtnNext_Clicked"
         android:text="Next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="#ffffff"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passLogIn" />
 

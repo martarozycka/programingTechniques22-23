@@ -6,10 +6,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import be.kuleuven.gt.model.Comment;
 import be.kuleuven.gt.model.Location;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +51,10 @@ public class TripLogActivity extends AppCompatActivity {
     private Spinner spLocation;
     private ArrayList<String> locationNamesList = new ArrayList<>();
     private String selectLocation;
-
+    private static final String IMAGE_URL = "https://studev.groept.be/api/a22pt303/selectPicturePerLocation/";
+    private ImageView imageRetrieved;
+    private RequestQueue requestQueue;
+    private Button btnMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +67,9 @@ public class TripLogActivity extends AppCompatActivity {
         txtStartDate = findViewById(R.id.txtStartDate);
         txtEndDate = findViewById(R.id.txtEndDate);
         txtLocationName = findViewById(R.id.txtLocationName);
+
+        imageRetrieved = findViewById(R.id.imageRetrieved);
+        requestQueue = Volley.newRequestQueue(this);
 
         Trip trip = (Trip) getIntent().getParcelableExtra("Trip");
         txtTripName.setText(trip.getName());
@@ -110,6 +123,24 @@ public class TripLogActivity extends AppCompatActivity {
         });
     }
 
+    public void onBtnMap_Clicked(View Caller) {
+//        TextView txtLocationName = (TextView) findViewById(R.id.txtLocationName);
+//        Location location = new Location(
+//                txtLocationName.getText().toString(),
+//                "5",
+//                "52"
+//
+//        );
+        Location location = new Location(
+                locationList.get(0).getLocationName(),
+                locationList.get(0).getLatitude(),
+                locationList.get(0).getLongitude()
+        );
+        Intent intent = new Intent(this, MapActivity.class);
+        intent.putExtra("Location", location);
+        startActivity(intent);
+    }
+
     private void requestLocations() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         Trip trip = (Trip) getIntent().getParcelableExtra("Trip");
@@ -130,6 +161,7 @@ public class TripLogActivity extends AppCompatActivity {
                         }
 
                         requestComments();
+                        requestImages();
                     }
 
                 },
@@ -213,5 +245,56 @@ public class TripLogActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Retrieves the image from the DB
+     */
+    public void requestImages()
+    {
+        String locationName = null;
+        if (!locationList.isEmpty()) {
+            locationName = locationList.get(0).getLocationName();
+        }
+
+        System.out.println(IMAGE_URL+locationName);
+        //Standard Volley request. We don't need any parameters for this one
+        JsonArrayRequest retrieveImageRequest = new JsonArrayRequest(Request.Method.GET, IMAGE_URL+ locationName, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try
+                        {
+                            //Check if the DB actually contains an image
+                            if( response.length() > 0 ) {
+                                JSONObject o = response.getJSONObject(0);
+
+                                //converting base64 string to image
+                                String b64String = o.getString("image");
+                                byte[] imageBytes = Base64.decode( b64String, Base64.DEFAULT );
+                                Bitmap bitmap2 = BitmapFactory.decodeByteArray( imageBytes, 0, imageBytes.length );
+
+                                //Link the bitmap to the ImageView, so it's visible on screen
+                                imageRetrieved.setImageBitmap( bitmap2 );
+
+                                //Just a double-check to tell us the request has completed
+                                Toast.makeText(TripLogActivity.this, "Image retrieved from DB", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        catch( JSONException e )
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(TripLogActivity.this, "Unable to communicate with server", Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+
+        requestQueue.add(retrieveImageRequest);
     }
 }

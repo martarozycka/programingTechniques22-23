@@ -14,7 +14,7 @@ public class Location implements Parcelable{
     private String longitude;
     private String latitude;
 
-    public Location(String locationName, String longitude, String latitude) {
+    public Location(String locationName, String latitude, String longitude) {
         this.locationName = locationName;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -22,8 +22,8 @@ public class Location implements Parcelable{
 
     protected Location(Parcel in) {
         locationName = in.readString();
-        longitude = in.readString();
         latitude = in.readString();
+        longitude = in.readString();
     }
 
     public static final Creator<Location> CREATOR = new Creator<Location>() {
@@ -47,15 +47,15 @@ public class Location implements Parcelable{
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(locationName);
-        dest.writeString(longitude);
         dest.writeString(latitude);
+        dest.writeString(longitude);
     }
 
     public Location(JSONObject o) {
         try {
             locationName = o.getString("name");
-            longitude = o.getString("longitude");
             latitude = o.getString("latitude");
+            longitude = o.getString("longitude");
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -5,96 +5,105 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:onClick="onBtnLogin_Clicked"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/oxana_v_qoailamljbu_unsplash__7_">
+
 
     <TextView
         android:id="@+id/appName"
-        android:layout_width="287dp"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
-        android:layout_marginTop="147dp"
+        android:layout_marginTop="188dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginBottom="7dp"
-        android:text="WhereNext?"
+
+        android:text="Trip Log"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        android:textColor="#292525"
+        android:shadowColor="#ffffff"
+        android:textSize="60dp"
+        android:typeface="normal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.173"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="115dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="115dp"
-        android:background="#933636"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appName"
-        app:srcCompat="@drawable/application" />
-
     <TextView
         android:id="@+id/infoLogIn"
-        android:layout_width="340dp"
-        android:layout_height="37dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="37dp"
-        android:layout_marginBottom="240dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="208dp"
+        android:shadowColor="#ffffff"
+        android:shadowDx="-1"
+        android:shadowDy="-1"
+        android:shadowRadius="1"
         android:text="If you already have an existing account,  Log in."
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#292525"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.421"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/appName"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/idLogIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="163dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="184dp"
+        android:backgroundTint="#8BC34A"
+        android:textColor="#ffffff"
         android:onClick="onBtnLogin_Clicked"
         android:text="Log In"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoLogIn"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.026" />
 
     <TextView
         android:id="@+id/infoSignUp"
-        android:layout_width="353dp"
-        android:layout_height="33dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="23dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="128dp"
         android:text="If you want to create a new account, Sign up."
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#292525"
+        android:textStyle="bold"
+        android:shadowColor="#ffffff"
+        android:shadowDx="-1"
+        android:shadowDy="-1"
+        android:shadowRadius="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.341"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idLogIn" />
+        app:layout_constraintTop_toBottomOf="@+id/idLogIn"
+        app:layout_constraintVertical_bias="0.029" />
 
     <Button
         android:id="@+id/idSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="157dp"
-        android:layout_marginEnd="158dp"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="80dp"
+        android:backgroundTint="#8BC34A"
         android:onClick="onBtnSignUp_Clicked"
         android:text="Sign up"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoSignUp" />
+        app:layout_constraintTop_toBottomOf="@+id/infoSignUp"
+        app:layout_constraintVertical_bias="0.046" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
