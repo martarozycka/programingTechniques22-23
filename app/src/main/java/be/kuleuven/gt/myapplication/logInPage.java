@@ -73,7 +73,7 @@ public class logInPage extends AppCompatActivity {
             // check if all text fields have data
             boolean enableButton = username.getText().length() > 0 && password.getText().length() > 0 ;
             // enable/disable the button based on the text fields' content
-            submitLogIn.setEnabled(true);
+            submitLogIn.setEnabled(enableButton);
             userInput = username.getText().toString();
             passwordInput=password.getText().toString();
         }

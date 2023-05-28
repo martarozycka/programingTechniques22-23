@@ -5,20 +5,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignInPage"
-    android:background="@drawable/oxana_v_qoailamljbu_unsplash__7_">
+    android:background="@drawable/rm222_mind_17">
 
     <TextView
         android:id="@+id/infoPageSignIn"
-        android:layout_width="315dp"
-        android:layout_height="46dp"
+        android:layout_width="276dp"
+        android:layout_height="67dp"
         android:layout_marginStart="46dp"
-        android:layout_marginTop="47dp"
+        android:layout_marginTop="101dp"
         android:layout_marginEnd="47dp"
-        android:layout_marginBottom="644dp"
-        android:text="Let us help you plan new trips, make new friends and join them in new adventures."
+        android:layout_marginBottom="510dp"
+        android:shadowColor="#ffffff"
+        android:shadowDx="-1"
+        android:shadowDy="-1"
+        android:shadowRadius="1"
+        android:text="Let us help you remember your best moments while traveling."
+        android:textColor="#292525"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.833" />
+
+    <EditText
+        android:id="@+id/createUsername"
+        android:layout_width="237dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="101dp"
+        android:layout_marginBottom="29dp"
+        android:ems="10"
+        android:backgroundTint="#000000"
+        android:hint="Create username"
+        android:textColor="@color/black"
+        android:shadowColor="#ffffff"
+        android:textColorHint="#000000"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/createPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoPageSignIn" />
+
+    <EditText
+        android:id="@+id/createPassword"
+        android:layout_width="239dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="101dp"
+        android:layout_marginBottom="72dp"
+
+        android:backgroundTint="#000000"
+        android:ems="10"
+        android:hint="Create password"
+        android:textColor="@color/black"
+        android:inputType="text"
+        android:textColorHint="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/createAccount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createUsername" />
+
+    <Button
+        android:id="@+id/createAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="134dp"
+        android:layout_marginEnd="132dp"
+        android:layout_marginBottom="500dp"
+        android:onClick="onBtnCreateAccount_Clicked"
+
+        android:backgroundTint="#8BC34A"
+        android:text="Create account"
+        android:textColor="#ffffff"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/createPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
