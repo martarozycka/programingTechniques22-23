@@ -9,17 +9,17 @@
 
     <TextView
         android:id="@+id/infoTextLogInPage"
-        android:layout_width="330dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="40dp"
+        android:layout_width="261dp"
+        android:layout_height="80dp"
         android:layout_marginTop="250dp"
         android:shadowColor="#ffffff"
         android:shadowDx="-1"
         android:shadowDy="-1"
         android:shadowRadius="1"
-        android:text="Enter your details to continue planning trips and joing your friends in new adventures."
+        android:text="Enter your details to keep track of the memories you made while travelling with your friends."
         android:textColor="#292525"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,13 +27,13 @@
         android:id="@+id/userLogIn"
         android:layout_width="208dp"
         android:layout_height="68dp"
-        android:layout_marginStart="100dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="#000000"
         android:hint="username"
-        android:textColor="@color/black"
         android:shadowColor="#ffffff"
+        android:textColor="@color/black"
         android:textColorHint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoTextLogInPage" />
 
@@ -41,14 +41,14 @@
         android:id="@+id/passLogIn"
         android:layout_width="208dp"
         android:layout_height="66dp"
-        android:layout_marginStart="100dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="#000000"
         android:ems="10"
         android:hint="password"
-        android:textColor="@color/black"
         android:inputType="textPassword"
+        android:textColor="@color/black"
         android:textColorHint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userLogIn" />
 
@@ -56,12 +56,12 @@
         android:id="@+id/submitLogIn"
         android:layout_width="154dp"
         android:layout_height="55dp"
-        android:layout_marginStart="128dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="#8BC34A"
         android:onClick="onBtnNext_Clicked"
-        android:text="Next"
+        android:text="Log in"
         android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passLogIn" />
 
