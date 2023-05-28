@@ -99,7 +99,7 @@ public class SignInPage extends AppCompatActivity {
     }
 
     private void processJSONArray(JSONArray jsonArray) {
-
+        usernames.clear();
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -107,7 +107,7 @@ public class SignInPage extends AppCompatActivity {
                 usernames.add(user);
             }
             // Check the size of usernames here
-            if (usernames.size() == 0) {
+            if (usernames.contains(createUsername.getText().toString())) {
                 Toast.makeText(
                         SignInPage.this,
                         "Username already used",
