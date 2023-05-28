@@ -1,4 +1,6 @@
 package be.kuleuven.gt.myapplication;
+import com.squareup.picasso.Picasso;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,10 +34,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import be.kuleuven.gt.model.Trip;
+import be.kuleuven.gt.model.User;
 
 public class TripLogActivity extends AppCompatActivity {
 
@@ -51,10 +58,13 @@ public class TripLogActivity extends AppCompatActivity {
     private Spinner spLocation;
     private ArrayList<String> locationNamesList = new ArrayList<>();
     private String selectLocation;
-    private static final String IMAGE_URL = "https://studev.groept.be/api/a22pt303/selectPicturePerLocation/";
     private ImageView imageRetrieved;
     private RequestQueue requestQueue;
     private Button btnMap;
+
+
+    private static final String image_URL="https://studev.groept.be/api/a22pt303/retrivingImage/";
+    private ArrayList<String> images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,51 +260,69 @@ public class TripLogActivity extends AppCompatActivity {
     /**
      * Retrieves the image from the DB
      */
-    public void requestImages()
-    {
-        String locationName = null;
-        if (!locationList.isEmpty()) {
-            locationName = locationList.get(0).getLocationName();
-        }
 
-        System.out.println(IMAGE_URL+locationName);
-        //Standard Volley request. We don't need any parameters for this one
-        JsonArrayRequest retrieveImageRequest = new JsonArrayRequest(Request.Method.GET, IMAGE_URL+ locationName, null,
+    private void requestImages() {
+        Trip trip = (Trip) getIntent().getParcelableExtra("Trip");
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                image_URL + trip.getName(),
+                null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        try
-                        {
-                            //Check if the DB actually contains an image
-                            if( response.length() > 0 ) {
-                                JSONObject o = response.getJSONObject(0);
-
-                                //converting base64 string to image
-                                String b64String = o.getString("image");
-                                byte[] imageBytes = Base64.decode( b64String, Base64.DEFAULT );
-                                Bitmap bitmap2 = BitmapFactory.decodeByteArray( imageBytes, 0, imageBytes.length );
-
-                                //Link the bitmap to the ImageView, so it's visible on screen
-                                imageRetrieved.setImageBitmap( bitmap2 );
-
-                                //Just a double-check to tell us the request has completed
-                                Toast.makeText(TripLogActivity.this, "Image retrieved from DB", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        catch( JSONException e )
-                        {
-                            e.printStackTrace();
-                        }
+                        processJSONResponse(response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(TripLogActivity.this, "Unable to communicate with server", Toast.LENGTH_LONG).show();
+                        Toast.makeText(
+                                TripLogActivity.this,
+                                "Unable to communicate with the server",
+                                Toast.LENGTH_LONG).show();
                     }
-                }
-        );
+                } );
+        requestQueue.add(jsonArrayRequest );
 
-        requestQueue.add(retrieveImageRequest);
     }
+
+
+    private void processJSONResponse(JSONArray response) {
+        for (int i = 0; i < response.length(); i++) {
+            try {
+                JSONObject jsonObject = response.getJSONObject(i);
+                if (!jsonObject.isNull("image")) {
+                    String base64Image = jsonObject.getString("image");
+                    String base64ImageWithoutPrefix = base64Image.replace("data:image/jpeg;base64,", "");
+                    byte[] imageBytes = Base64.decode(base64ImageWithoutPrefix, Base64.DEFAULT);
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
+
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                    File file = new File(getCacheDir(), "image_" + i + ".jpg");
+                    try {
+                        FileOutputStream fos = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        fos.flush();
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    ImageView imageView = findViewById(R.id.imageRetrieved);
+                    Picasso.get().load(file).into(imageView);
+
+
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
 }

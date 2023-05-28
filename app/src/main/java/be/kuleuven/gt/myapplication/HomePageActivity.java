@@ -6,13 +6,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +36,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 public class HomePageActivity extends AppCompatActivity {
 
     private RecyclerView tripView;
+    private String newTrip;
     private static final String TRIP_URL = "https://studev.groept.be/api/a22pt303/selectAllTripsOfAUser/";
     private List<Trip> trips = new ArrayList<>();
-
+    private static final String image_URL="https://studev.groept.be/api/a22pt303/retrivingImage/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,12 +95,14 @@ public class HomePageActivity extends AppCompatActivity {
         for (int i = 0; i < response.length(); i++) {
             try {
                 Trip trip = new Trip(response.getJSONObject(i));
+                requestImages(trip.getName());
                 trips.add(trip);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
+
 
     public void onBtnAddTrip_Clicked(View Caller) {
 // Set user details
@@ -98,4 +111,77 @@ public class HomePageActivity extends AppCompatActivity {
         intent.putExtra("User", user);
         startActivity(intent);
 
-}}
+}
+
+    private void requestImages(String newTrip) {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                image_URL + newTrip,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        processJSONResponse2(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                       // Toast.makeText(
+                              //  HomePageActivity.this,
+                               // "Unable to communicate with the server",
+                               // Toast.LENGTH_LONG).show();
+                    }
+                } );
+        requestQueue.add(jsonArrayRequest );
+
+    }
+
+
+    private void processJSONResponse2(JSONArray response) {
+        for (int i = 0; i < response.length(); i++) {
+            try {
+                JSONObject jsonObject = response.getJSONObject(i);
+                if (!jsonObject.isNull("image")) {
+                    String base64Image = jsonObject.getString("image");
+                    String base64ImageWithoutPrefix = base64Image.replace("data:image/jpeg;base64,", "");
+                    byte[] imageBytes = Base64.decode(base64ImageWithoutPrefix, Base64.DEFAULT);
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
+
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                    File file = new File(getCacheDir(), "image_" + i + ".jpg");
+                    try {
+                        FileOutputStream fos = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        fos.flush();
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    ImageView imageView = findViewById(R.id.tripImage);
+                    Picasso.get().load(file).into(imageView);
+
+
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+}

@@ -71,5 +71,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             tripView.getContext().startActivity(intent);
 
         }
+
     }
+
 }
