@@ -18,12 +18,9 @@
 
     <Button
         android:id="@+id/btnAddTrip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#8BC34A"
-        android:textColor="#ffffff"
         android:onClick="onBtnAddTrip_Clicked"
         android:text="Add Trip"
+        style="@style/ButtonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

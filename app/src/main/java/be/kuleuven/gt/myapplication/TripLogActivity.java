@@ -1,13 +1,4 @@
 package be.kuleuven.gt.myapplication;
-import com.squareup.picasso.Picasso;
-
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import be.kuleuven.gt.model.Comment;
-import be.kuleuven.gt.model.Location;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,12 +14,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,8 +37,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.kuleuven.gt.model.Comment;
+import be.kuleuven.gt.model.Location;
 import be.kuleuven.gt.model.Trip;
-import be.kuleuven.gt.model.User;
 
 public class TripLogActivity extends AppCompatActivity {
 

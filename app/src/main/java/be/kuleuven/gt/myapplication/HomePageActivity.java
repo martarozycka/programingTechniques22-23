@@ -49,17 +49,11 @@ public class HomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-
         tripView = findViewById( R.id.tripView );
-        // use this use to display only this user's trips
-
-
-
         TripAdapter adapter = new TripAdapter( trips );
         tripView.setAdapter( adapter );
         tripView.setLayoutManager( new LinearLayoutManager( this ));
         requestTrips();
-
     }
 
     private void requestTrips() {
@@ -88,7 +82,7 @@ public class HomePageActivity extends AppCompatActivity {
                 } );
         requestQueue.add(tripRequest);
 
-                }
+    }
 
 
     private void processJSONResponse(JSONArray response) {
@@ -110,8 +104,7 @@ public class HomePageActivity extends AppCompatActivity {
         Intent intent = new Intent(HomePageActivity.this, TripAddActivity.class);
         intent.putExtra("User", user);
         startActivity(intent);
-
-}
+    }
 
     private void requestImages(String newTrip) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);

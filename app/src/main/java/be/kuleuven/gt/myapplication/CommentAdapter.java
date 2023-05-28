@@ -15,7 +15,6 @@ import be.kuleuven.gt.model.Comment;
 import be.kuleuven.gt.model.Trip;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
-    //extends RecyclerView.Adapter<CommentAdapter.ViewHolder>
 
     private List<Comment> commentList;
 
@@ -54,39 +53,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         public ViewHolder(View commentView) {
             super(commentView);
             comment = (View) commentView;
-            //comment.setOnClickListener((View.OnClickListener) this);
         }
 
-
-//        public void onClick(View commentView) {
-//            TextView tripName = (TextView) tripView.findViewById(R.id.tripName);
-//            TextView tripStartDate = (TextView) tripView.findViewById(R.id.tripStartDate);
-//            TextView tripEndDate = (TextView) tripView.findViewById(R.id.tripEndDate);
-////            Trip trip = new Trip(
-////                    tripName.getText().toString(),
-////                    tripStartDate.getText().toString(),
-////                    tripEndDate.getText().toString()
-////            );
-//            Intent intent = new Intent(tripView.getContext(), TripLogActivity.class);
-////            intent.putExtra("Trip", trip);
-//            tripView.getContext().startActivity(intent);
-
-        }
     }
-
-//    @NonNull
-//    @Override
-//    public CommentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        return null;
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull CommentAdapter.ViewHolder holder, int position) {
-//
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return 0;
-//    }
+}
 
