@@ -414,8 +414,8 @@ public class TripAddActivity extends AppCompatActivity {
             //if(startdate.equals() && enddate.equals())
                     insertTrip();
                     insertLocation();
-                    insertComments();
                     insertTripUser();
+                    insertComments();
                     addFriend();
                     Intent intent = new Intent(this, HomePageActivity.class);
                     startActivity(intent);
