@@ -89,7 +89,6 @@ public class HomePageActivity extends AppCompatActivity {
         for (int i = 0; i < response.length(); i++) {
             try {
                 Trip trip = new Trip(response.getJSONObject(i));
-                requestImages(trip.getName());
                 trips.add(trip);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -106,66 +105,7 @@ public class HomePageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void requestImages(String newTrip) {
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                image_URL + newTrip,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        processJSONResponse2(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                       // Toast.makeText(
-                              //  HomePageActivity.this,
-                               // "Unable to communicate with the server",
-                               // Toast.LENGTH_LONG).show();
-                    }
-                } );
-        requestQueue.add(jsonArrayRequest );
-
-    }
-
-
-    private void processJSONResponse2(JSONArray response) {
-        for (int i = 0; i < response.length(); i++) {
-            try {
-                JSONObject jsonObject = response.getJSONObject(i);
-                if (!jsonObject.isNull("image")) {
-                    String base64Image = jsonObject.getString("image");
-                    String base64ImageWithoutPrefix = base64Image.replace("data:image/jpeg;base64,", "");
-                    byte[] imageBytes = Base64.decode(base64ImageWithoutPrefix, Base64.DEFAULT);
-                    ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
-
-                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-
-                    File file = new File(getCacheDir(), "image_" + i + ".jpg");
-                    try {
-                        FileOutputStream fos = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                        fos.flush();
-                        fos.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    ImageView imageView = findViewById(R.id.tripImage);
-                    Picasso.get().load(file).into(imageView);
-
-
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
 
 
