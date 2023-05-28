@@ -75,14 +75,11 @@
 
     <Button
         android:id="@+id/btnMap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="15dp"
-        android:backgroundTint="#8BC34A"
         android:onClick="onBtnMap_Clicked"
         android:text="Map"
-        android:textColor="#ffffff"
+        style="@style/ButtonStyle"
         app:layout_constraintStart_toEndOf="@+id/txtLocationName"
         app:layout_constraintTop_toBottomOf="@+id/spLocation" />
 

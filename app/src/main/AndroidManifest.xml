@@ -33,13 +33,7 @@
             android:value="@string/my_map_api_key" />
 
         <activity
-            android:name=".TripConfirmationActivity"
-            android:exported="false" />
-        <activity
             android:name=".TripAddActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyProfileActivity"
             android:exported="false" />
         <activity
             android:name=".TripLogActivity"
