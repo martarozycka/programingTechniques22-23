@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="#5B6E3F"
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp"
     app:cardMaxElevation="10dp"
@@ -26,8 +26,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:contentDescription="@string/app_name"
-            android:padding="5dp"
-             />
+            android:padding="5dp" />
 
         <!-- Text View to display Trip Name -->
         <TextView
@@ -37,7 +36,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@id/tripImage"
-            android:textColor="@color/black"
+            android:textColor="#ffffff"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -46,23 +45,48 @@
         <!-- Text VIew to display Trip End Date -->
         <TextView
             android:id="@+id/tripStartDate"
-            android:layout_width="149dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tripName"
-            android:layout_marginStart="109dp"
-            android:layout_marginTop="14dp"
-            android:layout_toEndOf="@id/tripImage"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:textColor="#ffffff"
+            android:layout_toEndOf="@id/textView"
             android:drawablePadding="2dp" />
 
         <TextView
             android:id="@+id/tripEndDate"
-            android:layout_width="149dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tripStartDate"
-            android:layout_marginStart="117dp"
-            android:layout_marginTop="17dp"
-            android:layout_toEndOf="@id/tripImage"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="5dp"
+            android:textColor="#ffffff"
+            android:layout_toEndOf="@id/textView2"
             android:drawablePadding="2dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tripName"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@+id/tripImage"
+            android:shadowColor="#000000"
+            android:text="Start date:"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/tripImage"
+            android:text="End date:"
+            android:textColor="#ffffff" />
 
     </RelativeLayout>
 
