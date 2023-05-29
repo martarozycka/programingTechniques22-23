@@ -2,6 +2,7 @@ package be.kuleuven.gt.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import be.kuleuven.gt.model.User;
 
@@ -106,7 +108,6 @@ public class TripAddActivity extends AppCompatActivity {
     };
 
     private void insertTrip() {
-        User user = (User) getIntent().getParcelableExtra("User");
             // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -173,10 +174,7 @@ public class TripAddActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         // Handle the response from the server, if needed.
                         progressDialog.dismiss();
-                        Toast.makeText(
-                                TripAddActivity.this,
-                                "Post request executed",
-                                Toast.LENGTH_SHORT).show();
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -222,10 +220,6 @@ public class TripAddActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         // Handle the response from the server, if needed.
                         progressDialog.dismiss();
-                        Toast.makeText(
-                                TripAddActivity.this,
-                                "Post request executed",
-                                Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -272,10 +266,6 @@ public class TripAddActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         // Handle the response from the server, if needed.
                         progressDialog.dismiss();
-                        Toast.makeText(
-                                TripAddActivity.this,
-                                "Post request executed",
-                                Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -329,6 +319,13 @@ public class TripAddActivity extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
     }
 
+    private void showFriendAddedDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(TripAddActivity.this);
+        builder.setTitle("Friend Added");
+        builder.setMessage("Your friend has been added successfully.");
+        builder.setPositiveButton("OK", null);
+        builder.show();
+    }
     private void processJSONArray(JSONArray jsonArray) {
 
         try {
@@ -347,6 +344,7 @@ public class TripAddActivity extends AppCompatActivity {
                 submitTrip.setEnabled(false);
             } else {
                 submitTrip.setEnabled(true);
+                showFriendAddedDialog();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -404,21 +402,33 @@ public class TripAddActivity extends AppCompatActivity {
         if (addFriendButton.isEnabled()){
             requestUserIds();
         }}
+    private boolean isValidDateFormat(String date) {
+        // Define the desired date format using regular expressions
+        String dateFormatPattern = "\\d{4}-\\d{2}-\\d{2}";
 
-
-
-
+        // Match the input date against the pattern
+        Pattern pattern = Pattern.compile(dateFormatPattern);
+        return pattern.matcher(date).matches();
+    }
 
     public void onBtnSubmitTrip_Clicked(View Caller) {
         if (submitTrip.isEnabled()){
-            //if(startdate.equals() && enddate.equals())
-                    insertTrip();
-                    insertLocation();
-                    insertTripUser();
-                    insertComments();
-                    addFriend();
-                    Intent intent = new Intent(this, HomePageActivity.class);
-                    startActivity(intent);
+            if (isValidDateFormat(startdate.getText().toString().trim()) && isValidDateFormat(enddate.getText().toString().trim())){
+                // Both dates have the correct format
+                insertTrip();
+                insertLocation();
+                insertTripUser();
+                insertComments();
+                addFriend();
+                Intent intent = new Intent(this, HomePageActivity.class);
+                startActivity(intent);
+            } else {
+                // Incorrect date format. Show an error message or take appropriate action.
+                Toast.makeText(
+                        TripAddActivity.this,
+                        "Incorrect date format",
+                        Toast.LENGTH_LONG).show();
+            }
 
         }}}
 

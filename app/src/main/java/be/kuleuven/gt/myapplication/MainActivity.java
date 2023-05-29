@@ -12,15 +12,12 @@ import be.kuleuven.gt.model.User;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnLogIn;
-    private Button btnSignUp;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnLogIn=(Button)findViewById(R.id.idLogIn);
-        btnSignUp=(Button)findViewById(R.id.idSignUp);
+        Button btnLogIn = (Button) findViewById(R.id.idLogIn);
+        Button btnSignUp = (Button) findViewById(R.id.idSignUp);
     }
     public void onBtnLogin_Clicked(View Caller) {
         Intent intent = new Intent(this, logInPage.class);

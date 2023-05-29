@@ -15,8 +15,6 @@ public class Trip implements Parcelable {
     private String name;
     private String startDate;
     private String endDate;
-    private static final String imageUrl="https://studev.groept.be/api/a22pt303/retrivingImage/";
-
 
     public Trip(String name, String startDate, String endDate) {
         this.name = name;
@@ -24,13 +22,11 @@ public class Trip implements Parcelable {
         this.endDate = endDate;
     }
 
+
     protected Trip(Parcel in) {
         name = in.readString();
         startDate = in.readString();
         endDate = in.readString();
-    }
-    public String getImageUrl() {
-        return imageUrl+name;
     }
 
 

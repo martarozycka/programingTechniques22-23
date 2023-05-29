@@ -135,10 +135,6 @@ public class SignInPage extends AppCompatActivity {
                     public void onResponse(String response) {
                         // Handle the response from the server, if needed.
                         progressDialog.dismiss();
-                        Toast.makeText(
-                                SignInPage.this,
-                                "Post request executed",
-                                Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -196,6 +192,6 @@ public class SignInPage extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
                 }
-            }, 1000); // Delay of 1 second (adjust as needed)
+            }, 1000); // Delay of 1 second
         }}
     }

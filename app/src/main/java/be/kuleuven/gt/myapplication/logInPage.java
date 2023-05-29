@@ -121,8 +121,7 @@ public class logInPage extends AppCompatActivity {
 
 
     public void onBtnNext_Clicked(View Caller) {
-        int i=0;
-        for (i=0;i<userList.size();i++){
+        for (int i=0;i<userList.size();i++){
             if (userInput. equals(userList.get(i))){
                  if (passwordInput.equals(infoUser.get(userInput))){
                      TextInputEditText username = (TextInputEditText) findViewById(R.id.userLogIn);

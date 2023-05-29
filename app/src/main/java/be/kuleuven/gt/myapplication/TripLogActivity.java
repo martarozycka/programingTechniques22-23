@@ -44,24 +44,19 @@ import be.kuleuven.gt.model.Trip;
 public class TripLogActivity extends AppCompatActivity {
 
     private ArrayList<Location> locationList = new ArrayList<>();
-    private TextView txtTripName;
-    private TextView txtStartDate;
-    private TextView txtEndDate;
     private TextView txtLocationName;
     private static final String LOCATION_URL = "https://studev.groept.be/api/a22pt303/selectLocationsPerTrip/";
     private RecyclerView commentView;
     private List<Comment> comments = new ArrayList<>();
     private static final String COMMENT_URL = "https://studev.groept.be/api/a22pt303/selectCommentsPerLocation/";
     private Spinner spLocation;
-    private ArrayList<String> locationNamesList = new ArrayList<>();
-    private String selectLocation;
+
     private ImageView imageRetrieved;
     private RequestQueue requestQueue;
-    private Button btnMap;
+    private ArrayList<String> locationNamesList = new ArrayList<>();
 
 
     private static final String image_URL="https://studev.groept.be/api/a22pt303/retrivingImage/";
-    private ArrayList<String> images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +65,13 @@ public class TripLogActivity extends AppCompatActivity {
         commentView = findViewById( R.id.commentView );
 
         // Initialize TextViews
-        txtTripName = findViewById(R.id.txtTripName);
-        txtStartDate = findViewById(R.id.txtStartDate);
-        txtEndDate = findViewById(R.id.txtEndDate);
+        TextView txtTripName = findViewById(R.id.txtTripName);
+        TextView txtStartDate = findViewById(R.id.txtStartDate);
+        TextView txtEndDate = findViewById(R.id.txtEndDate);
         txtLocationName = findViewById(R.id.txtLocationName);
 
-        imageRetrieved = findViewById(R.id.imageRetrieved);
-        requestQueue = Volley.newRequestQueue(this);
+            imageRetrieved = findViewById(R.id.imageRetrieved);
+         requestQueue = Volley.newRequestQueue(this);
 
         Trip trip = (Trip) getIntent().getParcelableExtra("Trip");
         txtTripName.setText(trip.getName());
@@ -98,28 +93,10 @@ public class TripLogActivity extends AppCompatActivity {
 
 // Set the adapter for the Spinner
         spLocation.setAdapter(locationAdapter);
-        //spLocation.setSelection(locationAdapter.getPosition(simple_spinner_item));
 
-
-
-//        CommentAdapter adapter = new CommentAdapter(comments);
-//        commentView.setAdapter( adapter );
-//        commentView.setLayoutManager( new LinearLayoutManager( this ));
-
-        // Add an OnItemSelectedListener to the spinner
         spLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Get the selected location from the spinner
-//                String selectedLocationName = (String) parent.getItemAtPosition(position);
-//
-//                // Update the location TextView with the selected location
-//                txtLocationName.setText(selectedLocationName);
-//                requestComments(selectedLocationName);
-//                // Initialize the comment adapter and set it to the RecyclerView
-//                CommentAdapter adapter = new CommentAdapter(comments);
-//                commentView.setAdapter(adapter);
-//                commentView.setLayoutManager(new LinearLayoutManager(TripLogActivity.this));
                 spLocation.setSelection(position);
             }
 
@@ -131,13 +108,6 @@ public class TripLogActivity extends AppCompatActivity {
     }
 
     public void onBtnMap_Clicked(View Caller) {
-//        TextView txtLocationName = (TextView) findViewById(R.id.txtLocationName);
-//        Location location = new Location(
-//                txtLocationName.getText().toString(),
-//                "5",
-//                "52"
-//
-//        );
         Location location = new Location(
                 locationList.get(0).getLocationName(),
                 locationList.get(0).getLatitude(),
@@ -159,7 +129,6 @@ public class TripLogActivity extends AppCompatActivity {
                         // Proceed with parsing and using the data
                         processJSONArray(response);
 
-
                         // initialize 1st location of the trip
                         if (!locationList.isEmpty()) {
                             //txtLocationName.setText(spLocation.getSelectedItem().toString());
@@ -167,7 +136,7 @@ public class TripLogActivity extends AppCompatActivity {
                             //txtLocationName.setText(selectLocation);
                         }
 
-                        requestComments();
+                       requestComments();
                         requestImages();
                     }
 
@@ -216,8 +185,8 @@ public class TripLogActivity extends AppCompatActivity {
                         // JSON array is obtained successfully
                         // Proceed with parsing and using the data
                         processJSONArray2(response);
-
                     }
+
 
                 },
                 new Response.ErrorListener() {
@@ -257,19 +226,21 @@ public class TripLogActivity extends AppCompatActivity {
     /**
      * Retrieves the image from the DB
      */
-
     private void requestImages() {
-        Trip trip = (Trip) getIntent().getParcelableExtra("Trip");
+        String locationName = null;
+        if (!locationList.isEmpty()) {
+            locationName = locationList.get(0).getLocationName();}
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                image_URL + trip.getName(),
+                image_URL +locationName,
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        processJSONResponse(response);
+
+                        processJSONResponse3(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -286,7 +257,7 @@ public class TripLogActivity extends AppCompatActivity {
     }
 
 
-    private void processJSONResponse(JSONArray response) {
+    private void processJSONResponse3(JSONArray response) {
         for (int i = 0; i < response.length(); i++) {
             try {
                 JSONObject jsonObject = response.getJSONObject(i);
@@ -295,30 +266,20 @@ public class TripLogActivity extends AppCompatActivity {
                     String base64ImageWithoutPrefix = base64Image.replace("data:image/jpeg;base64,", "");
                     byte[] imageBytes = Base64.decode(base64ImageWithoutPrefix, Base64.DEFAULT);
                     ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
-
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-                    File file = new File(getCacheDir(), "image_" + i + ".jpg");
-                    try {
-                        FileOutputStream fos = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                        fos.flush();
-                        fos.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    if (bitmap != null) {
+                        ImageView imageView = findViewById(R.id.imageRetrieved);
+                        imageView.setImageBitmap(bitmap);
+                    } else {
                     }
-
-                    ImageView imageView = findViewById(R.id.imageRetrieved);
-                    Picasso.get().load(file).into(imageView);
-
-
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
+
 
 
 
